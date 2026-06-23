@@ -1,4 +1,4 @@
-# ansible-zero-to-hero
+# Ansible Zero to Hero
 
 🚀 Master Ansible through hands-on labs, real-world automation projects, and
 production-ready examples — from beginner concepts to advanced DevOps
