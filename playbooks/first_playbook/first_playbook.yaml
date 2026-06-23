@@ -1,17 +1,18 @@
 ---
 - hosts: all
   become: true
+
   tasks:
     - name: Install apache service
       ansible.builtin.apt:
         name: apache2
         state: present
         update_cache: yes
+
     - name: Copy file with owner and permissions
       ansible.builtin.copy:
-      src: index.html
-      dest: /var/html
-      owner: root
-      group: root
-      mode: '0644'
-
+        src: "{{ playbook_dir }}/index.html"
+        dest: /home/ubuntu/index.html
+        owner: root
+        group: root
+        mode: '0644'
