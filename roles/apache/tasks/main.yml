@@ -1,0 +1,21 @@
+---
+- name: Install {{ apache_package_name }}
+  ansible.builtin.apt:
+    name: "{{ apache_package_name }}"
+    state: present
+    update_cache: yes
+
+- name: Deploy landing page to {{ apache_index_dest }}
+  ansible.builtin.copy:
+    src: "{{ apache_index_src }}"
+    dest: "{{ apache_index_dest }}"
+    owner: root
+    group: root
+    mode: '0644'
+  notify: reload apache
+
+- name: Ensure {{ apache_service_name }} is running and enabled
+  ansible.builtin.service:
+    name: "{{ apache_service_name }}"
+    state: started
+    enabled: yes
