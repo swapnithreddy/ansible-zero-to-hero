@@ -1,0 +1,8 @@
+---
+# Default variables for the `apache` role.
+# Override these in the playbook, in group_vars, or via --extra-vars.
+
+apache_index_src: index.html
+apache_index_dest: /var/www/html/index.html
+apache_service_name: apache2
+apache_package_name: apache2

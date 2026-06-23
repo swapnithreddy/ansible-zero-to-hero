@@ -1,0 +1,25 @@
+---
+- name: Install Apache and deploy landing page
+  hosts: all
+  become: true
+
+  tasks:
+    - name: Install apache2 package
+      ansible.builtin.apt:
+        name: apache2
+        state: present
+        update_cache: yes
+
+    - name: Deploy landing page to apache web root
+      ansible.builtin.copy:
+        src: "{{ playbook_dir }}/index.html"
+        dest: /var/www/html/index.html
+        owner: root
+        group: root
+        mode: '0644'
+
+    - name: Ensure apache2 is running and enabled
+      ansible.builtin.service:
+        name: apache2
+        state: started
+        enabled: yes

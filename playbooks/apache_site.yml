@@ -1,0 +1,7 @@
+---
+- name: Deploy Apache and serve the landing page
+  hosts: all
+  become: true
+
+  roles:
+    - apache

@@ -1,0 +1,20 @@
+---
+galaxy_info:
+  role_name: apache
+  author: ansible-zero-to-hero
+  description: Install Apache HTTP Server and deploy a static landing page.
+  license: MIT
+  min_ansible_version: "2.12"
+  platforms:
+    - name: Ubuntu
+      versions:
+        - focal
+        - jammy
+        - noble
+  galaxy_tags:
+    - apache
+    - web
+    - httpd
+    - ubuntu
+
+dependencies: []
