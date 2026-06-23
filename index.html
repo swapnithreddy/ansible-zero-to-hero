@@ -1,0 +1,1185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Ansible Learning Hub - Start your journey into automation and infrastructure management">
+    <title>Ansible Learning Hub - Master Infrastructure Automation</title>
+    
+    <style>
+        /* ============================================
+           GLOBAL STYLES & CSS VARIABLES
+           ============================================ */
+        :root {
+            /* Color Palette - DevOps inspired */
+            --primary-dark: #0a0e27;
+            --secondary-dark: #1a1f3a;
+            --tertiary-dark: #242d47;
+            --accent-cyan: #00d4ff;
+            --accent-orange: #ff6b35;
+            --accent-purple: #7c3aed;
+            --text-light: #e0e7ff;
+            --text-muted: #9ca3af;
+            --success-green: #10b981;
+            
+            /* Spacing */
+            --spacing-xs: 0.5rem;
+            --spacing-sm: 1rem;
+            --spacing-md: 2rem;
+            --spacing-lg: 3rem;
+            --spacing-xl: 4rem;
+            --spacing-2xl: 6rem;
+            
+            /* Typography */
+            --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            --font-mono: 'Monaco', 'Courier New', monospace;
+        }
+
+        /* ============================================
+           RESET & BASE STYLES
+           ============================================ */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            background: linear-gradient(135deg, var(--primary-dark) 0%, #0f1835 50%, var(--secondary-dark) 100%);
+            color: var(--text-light);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        a {
+            color: var(--accent-cyan);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        a:hover {
+            color: var(--accent-orange);
+        }
+
+        /* ============================================
+           HEADER & NAVIGATION
+           ============================================ */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: rgba(10, 14, 39, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(0, 212, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        header.scrolled {
+            background: rgba(10, 14, 39, 0.98);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: var(--spacing-md) var(--spacing-lg);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .logo-icon {
+            font-size: 1.8rem;
+        }
+
+        nav {
+            display: flex;
+            gap: var(--spacing-lg);
+            list-style: none;
+        }
+
+        nav a {
+            font-size: 0.95rem;
+            color: var(--text-light);
+            position: relative;
+            padding-bottom: 0.25rem;
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--accent-cyan), var(--accent-orange));
+            transition: width 0.3s ease;
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--accent-cyan);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* ============================================
+           HERO SECTION
+           ============================================ */
+        .hero {
+            margin-top: 80px;
+            min-height: 90vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.05) 0%, rgba(124, 58, 237, 0.05) 100%);
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(0, 212, 255, 0.15) 0%, transparent 70%);
+            border-radius: 50%;
+            animation: float 8s ease-in-out infinite;
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            bottom: -30%;
+            left: -10%;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(124, 58, 237, 0.15) 0%, transparent 70%);
+            border-radius: 50%;
+            animation: float 10s ease-in-out infinite reverse;
+        }
+
+        .hero-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: var(--spacing-xl) var(--spacing-lg);
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--spacing-2xl);
+            align-items: center;
+            position: relative;
+            z-index: 10;
+        }
+
+        .hero-text h1 {
+            font-size: 3.5rem;
+            line-height: 1.2;
+            margin-bottom: var(--spacing-lg);
+            animation: slideInLeft 0.8s ease-out;
+        }
+
+        .hero-text h1 .gradient-text {
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-orange));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-text p {
+            font-size: 1.25rem;
+            color: var(--text-muted);
+            margin-bottom: var(--spacing-lg);
+            animation: slideInLeft 0.8s ease-out 0.2s both;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: var(--spacing-md);
+            animation: slideInLeft 0.8s ease-out 0.4s both;
+        }
+
+        .btn {
+            padding: 1rem 2.5rem;
+            border-radius: 0.5rem;
+            border: none;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+            color: #000;
+            box-shadow: 0 10px 30px rgba(0, 212, 255, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(0, 212, 255, 0.4);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            border: 2px solid var(--accent-cyan);
+            color: var(--accent-cyan);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(0, 212, 255, 0.1);
+            transform: translateY(-3px);
+        }
+
+        .hero-image {
+            position: relative;
+            animation: float 4s ease-in-out infinite;
+        }
+
+        .ansible-logo {
+            width: 100%;
+            max-width: 400px;
+            height: auto;
+            position: relative;
+        }
+
+        .floating-shape {
+            position: absolute;
+            border-radius: 50%;
+            opacity: 0.1;
+        }
+
+        .shape-1 {
+            width: 300px;
+            height: 300px;
+            background: var(--accent-cyan);
+            top: -50px;
+            right: -50px;
+            animation: rotate 20s linear infinite;
+        }
+
+        .shape-2 {
+            width: 200px;
+            height: 200px;
+            background: var(--accent-orange);
+            bottom: 50px;
+            right: -100px;
+            animation: rotate 25s linear infinite reverse;
+        }
+
+        /* ============================================
+           ABOUT SECTION
+           ============================================ */
+        .about {
+            padding: var(--spacing-2xl) var(--spacing-lg);
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            margin-bottom: var(--spacing-lg);
+            text-align: center;
+            position: relative;
+            display: inline-block;
+            width: 100%;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent-cyan), var(--accent-orange));
+            border-radius: 2px;
+        }
+
+        .about-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: var(--spacing-lg);
+            margin-top: var(--spacing-2xl);
+        }
+
+        .about-card {
+            background: rgba(36, 45, 71, 0.5);
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            padding: var(--spacing-lg);
+            border-radius: 0.75rem;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            animation: slideInUp 0.6s ease-out;
+        }
+
+        .about-card:hover {
+            border-color: var(--accent-cyan);
+            box-shadow: 0 10px 30px rgba(0, 212, 255, 0.1);
+            transform: translateY(-5px);
+        }
+
+        .about-card h3 {
+            color: var(--accent-cyan);
+            margin-bottom: var(--spacing-md);
+            font-size: 1.3rem;
+        }
+
+        /* ============================================
+           ROADMAP SECTION
+           ============================================ */
+        .roadmap {
+            padding: var(--spacing-2xl) var(--spacing-lg);
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.03) 0%, rgba(124, 58, 237, 0.03) 100%);
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .roadmap-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: var(--spacing-lg);
+            margin-top: var(--spacing-2xl);
+        }
+
+        .roadmap-card {
+            background: linear-gradient(135deg, rgba(26, 31, 58, 0.8) 0%, rgba(36, 45, 71, 0.8) 100%);
+            border: 2px solid transparent;
+            padding: var(--spacing-lg);
+            border-radius: 0.75rem;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.23, 1, 0.320, 1);
+            animation: slideInUp 0.6s ease-out;
+            cursor: pointer;
+        }
+
+        .roadmap-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 212, 255, 0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .roadmap-card:hover {
+            border-color: var(--accent-cyan);
+            box-shadow: 0 15px 40px rgba(0, 212, 255, 0.2);
+            transform: translateY(-10px) scale(1.02);
+        }
+
+        .roadmap-card:hover::before {
+            left: 100%;
+        }
+
+        .roadmap-number {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: #000;
+            margin-bottom: var(--spacing-md);
+        }
+
+        .roadmap-card h3 {
+            color: var(--text-light);
+            margin-bottom: var(--spacing-sm);
+            font-size: 1.25rem;
+        }
+
+        .roadmap-card p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        /* ============================================
+           FEATURES SECTION
+           ============================================ */
+        .features {
+            padding: var(--spacing-2xl) var(--spacing-lg);
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: var(--spacing-lg);
+            margin-top: var(--spacing-2xl);
+        }
+
+        .feature-card {
+            background: rgba(36, 45, 71, 0.4);
+            border: 1px solid rgba(255, 107, 53, 0.2);
+            padding: var(--spacing-lg);
+            border-radius: 0.75rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            animation: slideInUp 0.6s ease-out;
+        }
+
+        .feature-card:hover {
+            border-color: var(--accent-orange);
+            background: rgba(36, 45, 71, 0.6);
+            transform: translateY(-8px);
+            box-shadow: 0 10px 30px rgba(255, 107, 53, 0.15);
+        }
+
+        .feature-icon {
+            font-size: 2.5rem;
+            margin-bottom: var(--spacing-md);
+            color: var(--accent-orange);
+        }
+
+        .feature-card h3 {
+            color: var(--accent-orange);
+            margin-bottom: var(--spacing-sm);
+            font-size: 1.15rem;
+        }
+
+        /* ============================================
+           QUICK COMMANDS SECTION
+           ============================================ */
+        .quick-commands {
+            padding: var(--spacing-2xl) var(--spacing-lg);
+            background: linear-gradient(135deg, rgba(255, 107, 53, 0.05) 0%, rgba(0, 212, 255, 0.05) 100%);
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .commands-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: var(--spacing-lg);
+            margin-top: var(--spacing-2xl);
+        }
+
+        .command-block {
+            background: rgba(10, 14, 39, 0.8);
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            border-radius: 0.5rem;
+            padding: var(--spacing-lg);
+            font-family: var(--font-mono);
+            font-size: 0.95rem;
+            color: var(--accent-cyan);
+            position: relative;
+            animation: slideInUp 0.6s ease-out;
+            overflow: hidden;
+        }
+
+        .command-block::before {
+            content: '❯';
+            color: var(--accent-orange);
+            margin-right: 0.5rem;
+        }
+
+        .command-block::after {
+            content: 'COPY';
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            padding: 0.25rem 0.5rem;
+            background: rgba(0, 212, 255, 0.2);
+            border: 1px solid var(--accent-cyan);
+            border-radius: 0.25rem;
+            font-size: 0.75rem;
+            cursor: pointer;
+            opacity: 0;
+            transition: all 0.2s ease;
+        }
+
+        .command-block:hover::after {
+            opacity: 1;
+        }
+
+        /* ============================================
+           RESOURCES SECTION
+           ============================================ */
+        .resources {
+            padding: var(--spacing-2xl) var(--spacing-lg);
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .resources-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: var(--spacing-lg);
+            margin-top: var(--spacing-2xl);
+        }
+
+        .resource-card {
+            background: linear-gradient(135deg, rgba(26, 31, 58, 0.6), rgba(36, 45, 71, 0.6));
+            border: 1px solid rgba(124, 58, 237, 0.3);
+            padding: var(--spacing-lg);
+            border-radius: 0.75rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            animation: slideInUp 0.6s ease-out;
+        }
+
+        .resource-card:hover {
+            border-color: var(--accent-purple);
+            background: linear-gradient(135deg, rgba(26, 31, 58, 0.8), rgba(36, 45, 71, 0.8));
+            transform: translateY(-8px);
+            box-shadow: 0 10px 30px rgba(124, 58, 237, 0.2);
+        }
+
+        .resource-card h3 {
+            color: var(--accent-purple);
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .resource-card a {
+            display: inline-block;
+            margin-top: var(--spacing-md);
+            padding: 0.5rem 1.5rem;
+            background: rgba(124, 58, 237, 0.2);
+            border: 1px solid var(--accent-purple);
+            border-radius: 0.25rem;
+            color: var(--accent-purple);
+            transition: all 0.3s ease;
+        }
+
+        .resource-card a:hover {
+            background: var(--accent-purple);
+            color: #fff;
+        }
+
+        /* ============================================
+           FOOTER
+           ============================================ */
+        footer {
+            background: linear-gradient(135deg, rgba(10, 14, 39, 0.95), rgba(26, 31, 58, 0.95));
+            border-top: 1px solid rgba(0, 212, 255, 0.1);
+            padding: var(--spacing-2xl) var(--spacing-lg) var(--spacing-lg);
+            margin-top: var(--spacing-2xl);
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .footer-message {
+            font-size: 1.5rem;
+            margin-bottom: var(--spacing-lg);
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-orange));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .footer-copyright {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            border-top: 1px solid rgba(0, 212, 255, 0.1);
+            padding-top: var(--spacing-lg);
+        }
+
+        /* ============================================
+           ANIMATIONS
+           ============================================ */
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+
+        @keyframes rotate {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* ============================================
+           RESPONSIVE DESIGN
+           ============================================ */
+        @media (max-width: 768px) {
+            .hero-content {
+                grid-template-columns: 1fr;
+                gap: var(--spacing-lg);
+            }
+
+            .hero-text h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero-text p {
+                font-size: 1rem;
+            }
+
+            .hero-buttons {
+                flex-direction: column;
+            }
+
+            nav {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                flex-direction: column;
+                background: var(--secondary-dark);
+                padding: var(--spacing-lg);
+                gap: var(--spacing-md);
+            }
+
+            nav.active {
+                display: flex;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .about-grid,
+            .roadmap-grid,
+            .features-grid,
+            .commands-grid,
+            .resources-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .hero::before {
+                width: 400px;
+                height: 400px;
+            }
+
+            .hero::after {
+                width: 300px;
+                height: 300px;
+            }
+
+            .header-content {
+                padding: var(--spacing-sm) var(--spacing-lg);
+            }
+
+            .logo {
+                font-size: 1.25rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            :root {
+                --spacing-lg: 2rem;
+                --spacing-xl: 2.5rem;
+                --spacing-2xl: 3rem;
+            }
+
+            .hero-text h1 {
+                font-size: 2rem;
+            }
+
+            .section-title {
+                font-size: 1.5rem;
+            }
+
+            .btn {
+                padding: 0.75rem 1.5rem;
+                font-size: 0.9rem;
+            }
+
+            .roadmap-number {
+                width: 40px;
+                height: 40px;
+                font-size: 1.25rem;
+            }
+        }
+
+        /* ============================================
+           UTILITY CLASSES
+           ============================================ */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 var(--spacing-lg);
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-orange));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+    </style>
+</head>
+<body>
+    <!-- ============================================
+         HEADER & NAVIGATION
+         ============================================ -->
+    <header id="header">
+        <div class="header-content">
+            <div class="logo">
+                <span class="logo-icon">⚡</span>
+                <span>Ansible Hub</span>
+            </div>
+            <nav id="nav-menu">
+                <a href="#about">About</a>
+                <a href="#roadmap">Roadmap</a>
+                <a href="#features">Features</a>
+                <a href="#commands">Commands</a>
+                <a href="#resources">Resources</a>
+            </nav>
+            <button class="mobile-menu-btn" id="mobile-menu-btn">☰</button>
+        </div>
+    </header>
+
+    <!-- ============================================
+         HERO SECTION
+         Welcome heading, subtitle, and CTA button
+         ============================================ -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-text">
+                <h1>Welcome to <span class="gradient-text">Ansible Learning Hub</span></h1>
+                <p>Master infrastructure automation and DevOps practices. Learn Ansible from basics to advanced real-world applications. Transform your infrastructure management with agentless automation.</p>
+                <div class="hero-buttons">
+                    <button class="btn btn-primary">Start Learning</button>
+                    <button class="btn btn-secondary">Learn More</button>
+                </div>
+            </div>
+            <div class="hero-image">
+                <!-- Ansible-themed illustration with SVG shapes -->
+                <svg class="ansible-logo" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#00d4ff;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#7c3aed;stop-opacity:1" />
+                        </linearGradient>
+                    </defs>
+                    <!-- Central gear/network icon -->
+                    <circle cx="150" cy="150" r="120" fill="none" stroke="url(#grad1)" stroke-width="2" opacity="0.3" style="animation: rotate 20s linear infinite;"/>
+                    <circle cx="150" cy="150" r="100" fill="none" stroke="#00d4ff" stroke-width="1.5" opacity="0.2" style="animation: rotate 25s linear infinite reverse;"/>
+                    <circle cx="150" cy="150" r="80" fill="none" stroke="#7c3aed" stroke-width="1.5" opacity="0.2" style="animation: rotate 15s linear infinite;"/>
+                    
+                    <!-- Central hub -->
+                    <circle cx="150" cy="150" r="30" fill="url(#grad1)" opacity="0.8"/>
+                    
+                    <!-- Network nodes -->
+                    <circle cx="150" cy="70" r="12" fill="#00d4ff" opacity="0.7"/>
+                    <circle cx="220" cy="110" r="12" fill="#ff6b35" opacity="0.7"/>
+                    <circle cx="230" cy="190" r="12" fill="#00d4ff" opacity="0.7"/>
+                    <circle cx="150" cy="230" r="12" fill="#7c3aed" opacity="0.7"/>
+                    <circle cx="70" cy="190" r="12" fill="#ff6b35" opacity="0.7"/>
+                    <circle cx="70" cy="110" r="12" fill="#00d4ff" opacity="0.7"/>
+                    
+                    <!-- Connection lines -->
+                    <line x1="150" y1="150" x2="150" y2="70" stroke="#00d4ff" stroke-width="2" opacity="0.4"/>
+                    <line x1="150" y1="150" x2="220" y2="110" stroke="#ff6b35" stroke-width="2" opacity="0.4"/>
+                    <line x1="150" y1="150" x2="230" y2="190" stroke="#00d4ff" stroke-width="2" opacity="0.4"/>
+                    <line x1="150" y1="150" x2="150" y2="230" stroke="#7c3aed" stroke-width="2" opacity="0.4"/>
+                    <line x1="150" y1="150" x2="70" y2="190" stroke="#ff6b35" stroke-width="2" opacity="0.4"/>
+                    <line x1="150" y1="150" x2="70" y2="110" stroke="#00d4ff" stroke-width="2" opacity="0.4"/>
+                </svg>
+                <div class="floating-shape shape-1"></div>
+                <div class="floating-shape shape-2"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================
+         ABOUT SECTION
+         What is Ansible, Benefits, and Why Use It
+         ============================================ -->
+    <section class="about" id="about">
+        <h2 class="section-title">About Ansible</h2>
+        <div class="about-grid">
+            <div class="about-card">
+                <h3>🎯 What is Ansible?</h3>
+                <p>Ansible is an open-source automation platform that simplifies IT orchestration, configuration management, and application deployment. It uses simple YAML-based playbooks to automate complex infrastructure tasks without requiring agents on managed nodes.</p>
+            </div>
+            <div class="about-card">
+                <h3>⚡ Key Benefits</h3>
+                <p>Agentless architecture, simple learning curve, wide platform support, powerful yet lightweight, and extensive community support. Ansible enables teams to automate repetitive tasks, reduce human error, and improve operational efficiency.</p>
+            </div>
+            <div class="about-card">
+                <h3>🚀 Why DevOps Engineers Use It</h3>
+                <p>DevOps teams leverage Ansible for infrastructure as code, continuous deployment, multi-tier application management, and cloud provisioning. It integrates seamlessly with existing tools and frameworks, making it essential for modern DevOps practices.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================
+         LEARNING ROADMAP SECTION
+         Step-by-step learning path from basics to advanced
+         ============================================ -->
+    <section class="roadmap" id="roadmap">
+        <h2 class="section-title">Learning Roadmap</h2>
+        <div class="roadmap-grid">
+            <div class="roadmap-card">
+                <div class="roadmap-number">1</div>
+                <h3>Installation</h3>
+                <p>Set up Ansible on your system. Learn installation requirements, dependencies, and basic configuration for your operating system.</p>
+            </div>
+            <div class="roadmap-card">
+                <div class="roadmap-number">2</div>
+                <h3>Inventory Files</h3>
+                <p>Understand how to define and organize your infrastructure. Master inventory formats, groups, variables, and dynamic inventory sources.</p>
+            </div>
+            <div class="roadmap-card">
+                <div class="roadmap-number">3</div>
+                <h3>Ad-Hoc Commands</h3>
+                <p>Execute quick tasks across your infrastructure using ansible command. Learn patterns, modules, and practical use cases for ad-hoc operations.</p>
+            </div>
+            <div class="roadmap-card">
+                <div class="roadmap-number">4</div>
+                <h3>Playbooks</h3>
+                <p>Write reusable automation scripts in YAML. Learn playbook structure, tasks, handlers, and how to orchestrate complex workflows.</p>
+            </div>
+            <div class="roadmap-card">
+                <div class="roadmap-number">5</div>
+                <h3>Roles</h3>
+                <p>Organize your playbooks into reusable components. Master role structure, dependencies, and best practices for code organization.</p>
+            </div>
+            <div class="roadmap-card">
+                <div class="roadmap-number">6</div>
+                <h3>Variables</h3>
+                <p>Manage configuration data dynamically. Learn variable scopes, facts, and how to leverage variables for flexible automation.</p>
+            </div>
+            <div class="roadmap-card">
+                <div class="roadmap-number">7</div>
+                <h3>Templates</h3>
+                <p>Generate dynamic configuration files. Master Jinja2 templating, filters, and conditional logic in Ansible templates.</p>
+            </div>
+            <div class="roadmap-card">
+                <div class="roadmap-number">8</div>
+                <h3>Ansible Galaxy</h3>
+                <p>Discover and use community roles. Learn to leverage existing roles from Galaxy and create shareable collections for your team.</p>
+            </div>
+            <div class="roadmap-card">
+                <div class="roadmap-number">9</div>
+                <h3>Real-World Projects</h3>
+                <p>Apply your knowledge to production scenarios. Build end-to-end solutions including deployment pipelines, infrastructure provisioning, and disaster recovery.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================
+         FEATURES SECTION
+         Key advantages of using Ansible
+         ============================================ -->
+    <section class="features" id="features">
+        <h2 class="section-title">Why Choose Ansible?</h2>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">🔌</div>
+                <h3>Agentless Architecture</h3>
+                <p>No agents to install or maintain on managed nodes. SSH-based connections make it lightweight and secure.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">📝</div>
+                <h3>YAML Configuration</h3>
+                <p>Human-readable YAML syntax makes playbooks easy to write, understand, and maintain for all team members.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">⚙️</div>
+                <h3>Easy Automation</h3>
+                <p>Simple learning curve with powerful capabilities. Automate everything from simple tasks to complex orchestrations.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">📈</div>
+                <h3>Scalability</h3>
+                <p>Manage thousands of nodes effortlessly. Built-in parallelization ensures fast and efficient operations at scale.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🔐</div>
+                <h3>Security First</h3>
+                <p>Secure by default with SSH, encrypted variables, and fine-grained access control for sensitive operations.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🌐</div>
+                <h3>Cross-Platform Support</h3>
+                <p>Works across Linux, Windows, macOS, and cloud platforms. Unified automation across diverse environments.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================
+         QUICK COMMANDS SECTION
+         Essential Ansible commands for quick reference
+         ============================================ -->
+    <section class="quick-commands" id="commands">
+        <h2 class="section-title">Quick Commands Reference</h2>
+        <div class="commands-grid">
+            <div class="command-block">
+                ansible --version
+            </div>
+            <div class="command-block">
+                ansible all -m ping
+            </div>
+            <div class="command-block">
+                ansible-playbook site.yml
+            </div>
+            <div class="command-block">
+                ansible -i inventory.ini group -m copy -a "src=file dest=/path"
+            </div>
+            <div class="command-block">
+                ansible-galaxy role install username.rolename
+            </div>
+            <div class="command-block">
+                ansible-vault create vars.yml
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================
+         RESOURCES SECTION
+         Links to official documentation and community
+         ============================================ -->
+    <section class="resources" id="resources">
+        <h2 class="section-title">Learning Resources</h2>
+        <div class="resources-grid">
+            <div class="resource-card">
+                <h3>📚 Official Documentation</h3>
+                <p>Comprehensive guides, module references, and best practices from the Ansible team.</p>
+                <a href="https://docs.ansible.com" target="_blank">Visit Docs</a>
+            </div>
+            <div class="resource-card">
+                <h3>🎨 Ansible Galaxy</h3>
+                <p>Discover thousands of community-contributed roles and collections to accelerate your automation.</p>
+                <a href="https://galaxy.ansible.com" target="_blank">Explore Galaxy</a>
+            </div>
+            <div class="resource-card">
+                <h3>💻 GitHub Repository</h3>
+                <p>Access source code, contribute to the project, and participate in the open-source community.</p>
+                <a href="https://github.com/ansible/ansible" target="_blank">View on GitHub</a>
+            </div>
+            <div class="resource-card">
+                <h3>👥 Community Forum</h3>
+                <p>Connect with other Ansible users, ask questions, and share your experiences with the global community.</p>
+                <a href="https://www.reddit.com/r/ansible/" target="_blank">Join Community</a>
+            </div>
+            <div class="resource-card">
+                <h3>🎓 Training Programs</h3>
+                <p>Official certification programs and training courses to validate your Ansible expertise.</p>
+                <a href="https://www.ansible.com/products/training" target="_blank">Learn More</a>
+            </div>
+            <div class="resource-card">
+                <h3>📰 Blog & Tutorials</h3>
+                <p>Latest news, case studies, and technical tutorials from industry experts and community members.</p>
+                <a href="https://www.ansible.com/blog" target="_blank">Read Blog</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================
+         FOOTER
+         Closing message and copyright information
+         ============================================ -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-message">🚀 Happy Automating with Ansible</div>
+            <div class="footer-copyright">
+                <p>&copy; 2024 Ansible Learning Hub. All rights reserved. | Made with ❤️ for DevOps Engineers | Powered by Ansible Community</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ============================================
+         JAVASCRIPT - INTERACTIVITY & FUNCTIONALITY
+         ============================================ -->
+    <script>
+        // ============================================
+        // STICKY HEADER ON SCROLL
+        // ============================================
+        const header = document.getElementById('header');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+
+        // ============================================
+        // MOBILE MENU TOGGLE
+        // ============================================
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const navMenu = document.getElementById('nav-menu');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            navMenu.classList.toggle('active');
+        });
+
+        // Close menu when a link is clicked
+        document.querySelectorAll('#nav-menu a').forEach(link => {
+            link.addEventListener('click', () => {
+                navMenu.classList.remove('active');
+            });
+        });
+
+        // ============================================
+        // SMOOTH SCROLL FOR NAVIGATION LINKS
+        // ============================================
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // ============================================
+        // COPY TO CLIPBOARD FOR COMMAND BLOCKS
+        // ============================================
+        document.querySelectorAll('.command-block').forEach(block => {
+            block.addEventListener('click', () => {
+                const text = block.textContent.replace('❯', '').trim();
+                navigator.clipboard.writeText(text).then(() => {
+                    // Visual feedback
+                    const originalContent = block.textContent;
+                    block.textContent = '✓ Copied!';
+                    setTimeout(() => {
+                        block.textContent = originalContent;
+                    }, 2000);
+                });
+            });
+        });
+
+        // ============================================
+        // INTERSECTION OBSERVER FOR ANIMATION TRIGGERS
+        // ============================================
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.animationPlayState = 'running';
+                }
+            });
+        }, observerOptions);
+
+        // Observe all animated elements
+        document.querySelectorAll('.roadmap-card, .about-card, .feature-card, .resource-card, .command-block').forEach(el => {
+            observer.observe(el);
+        });
+
+        // ============================================
+        // BUTTON CLICK HANDLERS
+        // ============================================
+        document.querySelectorAll('.btn-primary').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const roadmapSection = document.getElementById('roadmap');
+                roadmapSection.scrollIntoView({ behavior: 'smooth' });
+            });
+        });
+
+        document.querySelectorAll('.btn-secondary').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const aboutSection = document.getElementById('about');
+                aboutSection.scrollIntoView({ behavior: 'smooth' });
+            });
+        });
+
+        // ============================================
+        // ENHANCEMENT: Add cursor effect on hover
+        // ============================================
+        document.addEventListener('mousemove', (e) => {
+            const cards = document.querySelectorAll('.roadmap-card, .feature-card');
+            cards.forEach(card => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                const isInside = x > 0 && x < rect.width && y > 0 && y < rect.height;
+                if (isInside) {
+                    card.style.setProperty('--mouse-x', `${x}px`);
+                    card.style.setProperty('--mouse-y', `${y}px`);
+                }
+            });
+        });
+
+        // ============================================
+        // PRELOAD ANIMATIONS
+        // ============================================
+        window.addEventListener('load', () => {
+            document.body.style.opacity = '1';
+        });
+
+        // Initial opacity set to 0 (set in CSS would be better but JS ensures it)
+        document.body.style.opacity = '0';
+        document.body.style.transition = 'opacity 0.5s ease';
+    </script>
+</body>
+</html>
